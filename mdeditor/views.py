@@ -77,11 +77,11 @@ class UploadView(generic.View):
             cloudFilename = settings.PUBLIC_MEDIA_LOCATION + file_full_name
 
             session = boto3.session.Session(
-                aws_access_key_id=settings.AWS_ACCESS_KEY,
-                aws_secret_access_key=settings.AWS_SECRET_KEY
+                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
             )
             s3 = session.resource('s3')
-            s3.Bucket(settings.AWS_BUCKET_NAME).put_object(
+            s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME).put_object(
                 Key=cloudFilename, Body=file_full_name)
 
             url = f"{settings.MEDIA_URL}/{file_full_name}"
