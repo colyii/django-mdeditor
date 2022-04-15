@@ -86,7 +86,7 @@ class UploadView(generic.View):
                 verify=settings.AWS_S3_VERIFY,
             )
             result = s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME).upload_file(
-                cloudFilename, file_full_name)
+                upload_image, cloudFilename)
             if result is not None:
                 return JsonResponse({
                     'success': 0,
