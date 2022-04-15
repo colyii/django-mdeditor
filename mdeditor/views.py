@@ -73,7 +73,6 @@ class UploadView(generic.View):
             url = f"https://{settings.OSS_BUCKET_NAME}.{settings.OSS_ENDPOINT}/{file_full_name}"
         elif MDEDITOR_CONFIGS.get("S3"):
             print(upload_image.read())
-            exit()
             # 使用AWS S3
             import boto3
             cloudFilename = f"{settings.PUBLIC_MEDIA_LOCATION}/{file_full_name}"
