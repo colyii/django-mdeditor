@@ -74,7 +74,7 @@ class UploadView(generic.View):
         elif MDEDITOR_CONFIGS.get("S3"):
             # 使用AWS S3
             import boto3
-            cloudFilename = settings.PUBLIC_MEDIA_LOCATION + file_full_name
+            cloudFilename = f"{settings.PUBLIC_MEDIA_LOCATION}/{file_full_name}"
 
             session = boto3.Session(
                 aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -87,6 +87,12 @@ class UploadView(generic.View):
             )
             result = s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME).upload_file(
                 cloudFilename, file_full_name)
+            if result is not None:
+                return JsonResponse({
+                    'success': 0,
+                    'message': "上传失败：S3",
+                    'url': ""
+                })
 
             url = f"{settings.MEDIA_URL}/{file_full_name}"
         else:
