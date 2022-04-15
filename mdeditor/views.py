@@ -79,9 +79,9 @@ class UploadView(generic.View):
             session = boto3.session.Session(
                 aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                verify=settings.AWS_S3_USE_SSL
             )
-            s3 = session.resource('s3')
+            s3 = session.client(use_ssl=settings.AWS_S3_USE_SSL,
+                                verify=settings.AWS_S3_VERIFY).resource('s3')
             s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME).put_object(
                 Key=cloudFilename, Body=file_full_name)
 
