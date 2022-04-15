@@ -80,20 +80,17 @@ class UploadView(generic.View):
                 aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
             )
-            s3 = session.resource(
+            s3 = session.client(
                 service_name='s3',
                 use_ssl=settings.AWS_S3_USE_SSL,
                 verify=settings.AWS_S3_VERIFY,
             )
-            result = s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME).upload_file(
-                upload_image, cloudFilename)
-            if result is not None:
-                return JsonResponse({
-                    'success': 0,
-                    'message': "上传失败：S3",
-                    'url': ""
-                })
-
+            with open(os.path.join(file_path, file_full_name), 'rb') as data:
+                s3.upload_fileobj(
+                    data,
+                    settings.AWS_STORAGE_BUCKET_NAME,
+                    cloudFilename
+                )
             url = f"{settings.MEDIA_URL}/{file_full_name}"
         else:
             with open(os.path.join(file_path, file_full_name), 'wb+') as file:
