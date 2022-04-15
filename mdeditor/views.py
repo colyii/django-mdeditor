@@ -85,7 +85,7 @@ class UploadView(generic.View):
                 use_ssl=settings.AWS_S3_USE_SSL,
                 verify=settings.AWS_S3_VERIFY,
             )
-            result = s3.Bucket('<bucket_name>').upload_file(
+            result = s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME).upload_file(
                 cloudFilename, file_full_name)
 
             url = f"{settings.MEDIA_URL}/{file_full_name}"
