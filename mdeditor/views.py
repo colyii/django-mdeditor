@@ -72,6 +72,8 @@ class UploadView(generic.View):
             bucket.put_object(file_full_name, upload_image.read())
             url = f"https://{settings.OSS_BUCKET_NAME}.{settings.OSS_ENDPOINT}/{file_full_name}"
         elif MDEDITOR_CONFIGS.get("S3"):
+            print(upload_image.read())
+            exit()
             # 使用AWS S3
             import boto3
             cloudFilename = f"{settings.PUBLIC_MEDIA_LOCATION}/{file_full_name}"
@@ -85,12 +87,7 @@ class UploadView(generic.View):
                 use_ssl=settings.AWS_S3_USE_SSL,
                 verify=settings.AWS_S3_VERIFY,
             )
-            with open(os.path.join(file_path, file_full_name), 'rb') as data:
-                s3.upload_fileobj(
-                    data,
-                    settings.AWS_STORAGE_BUCKET_NAME,
-                    cloudFilename
-                )
+
             url = f"{settings.MEDIA_URL}/{file_full_name}"
         else:
             with open(os.path.join(file_path, file_full_name), 'wb+') as file:
