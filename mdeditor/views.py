@@ -86,7 +86,7 @@ class UploadView(generic.View):
                 verify=settings.AWS_S3_VERIFY,
             )
             s3.Bucket(settings.AWS_STORAGE_BUCKET_NAME).put_object(
-                Key=cloudFilename, Body=upload_image.read())
+                Key=cloudFilename, Body=upload_image)
 
             url = f"{settings.MEDIA_URL}/{file_full_name}"
         else:
